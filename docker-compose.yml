@@ -1,0 +1,88 @@
+# Appy on Docker
+#
+#   docker compose up -d --build
+#   open http://localhost:8080 and follow the installer
+#
+# Override defaults by exporting variables or putting them in a file passed
+# with --env-file (variables below are prefixed APPY_ so they never clash with
+# the Laravel .env in this folder).
+
+x-app: &app
+  image: appy:latest
+  restart: unless-stopped
+  environment:
+    APP_URL: ${APPY_URL:-http://localhost:8080}
+    AUTO_MIGRATE: ${APPY_AUTO_MIGRATE:-false}
+    # Only used to pre-fill the installer's database form on first start.
+    INSTALL_DB_HOST: db
+    INSTALL_DB_PORT: 3306
+    INSTALL_DB_DATABASE: ${APPY_DB_DATABASE:-appy}
+    INSTALL_DB_USERNAME: ${APPY_DB_USERNAME:-appy}
+    INSTALL_DB_PASSWORD: ${APPY_DB_PASSWORD:-appy_secret}
+  volumes:
+    - appy-storage:/var/www/html/storage
+    - appy-data:/var/www/html/docker-data
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  app:
+    <<: *app
+    build: .
+    ports:
+      - "${APPY_PORT:-8080}:80"
+
+  # Laravel scheduler (build triggers, timeouts, notifications, pruning, ...)
+  scheduler:
+    <<: *app
+    pull_policy: never   # uses the image built by the app service
+    command: ["php", "artisan", "schedule:work"]
+    healthcheck:
+      disable: true
+    depends_on:
+      app:
+        condition: service_healthy
+
+  # Android build server (Go + JDK 17 + Android SDK), built from ../Builder.
+  # Not published to the host: Laravel reaches it at http://builder:8845 and it
+  # calls back to Laravel at http://app. Its key lives in docker/builder.env and
+  # must match the builder's "server key" in Admin > Builders.
+  builder:
+    build: ../Builder
+    image: appy-builder:latest
+    restart: unless-stopped
+    env_file: docker/builder.env
+    environment:
+      BUILDER_SITE_URL: http://app
+      BUILDER_PORT: 8845
+    volumes:
+      - appy-builder-storage:/opt/appy-builder/storage
+      - appy-gradle-cache:/opt/gradle-home
+    depends_on:
+      app:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${APPY_DB_DATABASE:-appy}
+      MYSQL_USER: ${APPY_DB_USERNAME:-appy}
+      MYSQL_PASSWORD: ${APPY_DB_PASSWORD:-appy_secret}
+      MYSQL_ROOT_PASSWORD: ${APPY_DB_ROOT_PASSWORD:-root_secret}
+    volumes:
+      - appy-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${APPY_DB_ROOT_PASSWORD:-root_secret}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+volumes:
+  appy-storage:
+  appy-data:
+  appy-mysql:
+  appy-builder-storage:
+  appy-gradle-cache:

@@ -1,0 +1,38 @@
+/**
+ * Android WebView Platform Plugin Styles
+ * Version: 1.0.0
+ */
+
+/* WebView Settings Specific Styles */
+.webview-settings-container {
+    /* Custom styles for WebView settings if needed */
+}
+
+/* WebView Feature Toggle Styles */
+.webview-feature-toggle {
+    transition: all 0.2s ease-in-out;
+}
+
+.webview-feature-toggle:hover {
+    transform: translateX(2px);
+}
+
+/* User Agent Input */
+.webview-user-agent-input {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 0.875rem;
+}
+
+/* Plugin-specific animations */
+@keyframes webview-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.webview-loading {
+    animation: webview-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Stripe",
+  "slug": "stripe",
+  "description": "Accept payments globally with Stripe - The world's most popular payment platform",
+  "version": "1.0.0",
+  "author": "Titan Systems",
+  "author_url": "https://codecanyon.net/user/titansystems",
+
+  "type": "payment_gateway",
+  "icon": "resources/icon.jpg",
+
+  "main_class": "src/StripePlugin.php",
+  "namespace": "App\\Plugins\\PaymentGateways\\StripePlugin",
+
+  "requirements": {
+    "php": ">=8.2",
+    "laravel": ">=12.0"
+  },
+
+  "migrations": []
+}

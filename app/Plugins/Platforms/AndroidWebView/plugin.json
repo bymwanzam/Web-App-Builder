@@ -1,0 +1,623 @@
+{
+  "name": "Android WebView",
+  "slug": "android-webview",
+  "description": "Build Android apps that load website content in a native WebView with full customization",
+  "version": "1.0.0",
+  "author": "Titan Systems",
+  "author_url": "https://codecanyon.net/user/titansystems",
+  "type": "platform",
+  "icon": "resources/images/icon.jpg",
+  "main_class": "AndroidWebViewPlatform.php",
+  "namespace": "App\\Plugins\\Platforms\\AndroidWebView",
+  "requirements": {
+    "php": ">=8.2",
+    "laravel": ">=12.0"
+  },
+  "migrations": [
+    "database/migrations/2025_11_21_145300_create_android_webview_configs_table.php",
+    "database/migrations/2025_11_24_000000_update_text_color_fields_in_android_webview_configs.php",
+    "database/migrations/2025_11_24_163205_split_tab_colors_light_dark_in_android_webview_configs.php",
+    "database/migrations/2025_12_24_000004_create_app_pages_table.php"
+  ],
+  "livewire_components": [
+    "Livewire/AppCreationForm.php",
+    "Livewire/AppSidebar.php",
+    "Livewire/AppPreviewPanel.php",
+    "Livewire/BuildModal.php",
+    "Livewire/BuildsTable.php",
+    "Livewire/DeleteBuildModal.php",
+    "Livewire/BuildLogsModal.php",
+    "Livewire/BuildDownloadModal.php",
+    "Livewire/AppGeneralSettings.php",
+    "Livewire/AppDesignSettings.php",
+    "Livewire/AppIconSettings.php",
+    "Livewire/AppSplashscreenSettings.php",
+    "Livewire/AppNavigationSettings.php",
+    "Livewire/AppDrawerSettings.php",
+    "Livewire/AppWebViewSettings.php",
+    "Livewire/AppCustomCodeSettings.php",
+    "Livewire/AppPermissionsSettings.php",
+    "Livewire/AppSigningKeysSettings.php",
+    "Livewire/AppNotificationsSettings.php",
+    "Livewire/DeleteIconModal.php",
+    "Livewire/DeleteKeystoreModal.php",
+    "Livewire/EditKeystoreModal.php",
+    "Livewire/SigningKeyUploadModal.php",
+    "Livewire/DeleteSplashscreenImageModal.php",
+    "Livewire/DeleteSplashscreenLogoModal.php",
+    "Livewire/DeleteDrawerBackgroundModal.php",
+    "Livewire/DeleteDrawerLogoModal.php",
+    "Livewire/DeleteDrawerLogoDarkModal.php",
+    "Livewire/DeleteDrawerLogoLightModal.php",
+    "Livewire/HostedPagesSettings.php",
+    "Livewire/HostedPageEditorModal.php",
+    "Livewire/DeleteHostedPageModal.php"
+  ],
+  "settings": {
+    "content_type": "webview",
+    "default_build_format": "apk",
+    "min_sdk_version": 24,
+    "target_sdk_version": 34,
+    "build_tools_version": "34.0.0",
+    "supports_permissions": true,
+    "supports_custom_code": true,
+    "package_prefix": "com"
+  },
+  "ai_system_context": "This platform creates Android apps using WebView. It supports Material Design 3, bottom navigation tabs (up to 5 items), drawer/hamburger menus, splash screens, and various Android permissions. Build formats available: APK (for testing) and AAB (for Play Store). Hosted Pages: Users can create custom HTML pages hosted at /p/{app_id}/{slug}. Available templates: blank, about-us, contact, menu, terms, faq. Pages can be draft (private) or published (public). Hosted page URLs can be added to navigation or drawer menus. Use getAppConfig to get full configuration before making changes.",
+  "ai_functions": [
+    {
+      "name": "getAppConfig",
+      "description": "Get the complete app configuration for AI context. Use this to understand all current settings before making changes.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "setGeneralSettings",
+      "description": "Configure general app settings like URL, name, version, screen orientation, language, and admin email",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Website URL to load in the WebView (must be a valid URL)"
+          },
+          "appName": {
+            "type": "string",
+            "description": "Display name of the app (max 255 chars)"
+          },
+          "versionName": {
+            "type": "string",
+            "description": "App version name in X.Y.Z format (e.g., 1.0.0, 2.1.3)"
+          },
+          "versionCode": {
+            "type": "integer",
+            "description": "App version code (positive integer, must increase with each release)"
+          },
+          "screenOrientation": {
+            "type": "string",
+            "enum": ["system", "portrait", "landscape"],
+            "description": "Screen orientation lock"
+          },
+          "appLanguage": {
+            "type": "string",
+            "description": "App language code (e.g., 'en', 'es', 'fr')"
+          },
+          "adminEmail": {
+            "type": "string",
+            "description": "Admin contact email address"
+          }
+        }
+      }
+    },
+    {
+      "name": "setDesignSettings",
+      "description": "Configure the visual design of the Android app including theme, layout, and progress indicator",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "themeColor": {
+            "type": "string",
+            "description": "Primary theme color in hex format (e.g., #007AFF)"
+          },
+          "enableDarkMode": {
+            "type": "boolean",
+            "description": "Enable automatic dark mode support"
+          },
+          "layoutTemplate": {
+            "type": "string",
+            "enum": ["app_bar", "app_bar_tabs", "app_bar_drawer", "blank"],
+            "description": "App layout style"
+          },
+          "progressIndicator": {
+            "type": "string",
+            "enum": ["disable", "linear", "circular"],
+            "description": "Loading progress indicator style"
+          },
+          "progressIndicatorColor": {
+            "type": "string",
+            "description": "Progress indicator color in hex format"
+          },
+          "showAppBarTitle": {
+            "type": "boolean",
+            "description": "Show app name in the app bar"
+          }
+        }
+      }
+    },
+    {
+      "name": "setColorScheme",
+      "description": "Configure app color scheme including text colors, progress indicator, and navigation tab colors",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "textColorLight": {
+            "type": "string",
+            "description": "Text color for light mode (hex)"
+          },
+          "textColorDark": {
+            "type": "string",
+            "description": "Text color for dark mode (hex)"
+          },
+          "progressIndicatorColor": {
+            "type": "string",
+            "description": "Loading progress indicator color (hex)"
+          },
+          "navTabIconColorLight": {
+            "type": "string",
+            "description": "Navigation tab icon color for light mode (hex)"
+          },
+          "navTabIconColorDark": {
+            "type": "string",
+            "description": "Navigation tab icon color for dark mode (hex)"
+          },
+          "activeTabColorLight": {
+            "type": "string",
+            "description": "Active/selected tab color for light mode (hex)"
+          },
+          "activeTabColorDark": {
+            "type": "string",
+            "description": "Active/selected tab color for dark mode (hex)"
+          }
+        }
+      }
+    },
+    {
+      "name": "setNavigationItems",
+      "description": "Configure bottom navigation tabs (Material Design 3 style). Supports different action types.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Navigation items (max 5)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string", "description": "Tab label" },
+                "actionType": {
+                  "type": "string",
+                  "enum": ["internal", "external", "share", "email", "call", "hosted_page"],
+                  "description": "Type of action when tab is tapped. Defaults to internal."
+                },
+                "value": { "type": "string", "description": "URL, email, phone number, or hosted_page ID based on actionType" },
+                "url": { "type": "string", "description": "URL for the tab (legacy, use value instead)" },
+                "icon": { "type": "string", "description": "Material icon name (home, shopping-cart, heart, flame, newspaper, server, mobile, globe, chart, info, user, settings, mail)" }
+              }
+            }
+          }
+        },
+        "required": ["items"]
+      }
+    },
+    {
+      "name": "setDrawerItems",
+      "description": "Configure side drawer/hamburger menu items. Supports different action types.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "enabled": { "type": "boolean", "description": "Enable drawer menu" },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string", "description": "Menu item label" },
+                "actionType": {
+                  "type": "string",
+                  "enum": ["internal", "external", "share", "email", "call", "hosted_page"],
+                  "description": "Type of action. Defaults to internal."
+                },
+                "value": { "type": "string", "description": "URL, email, phone number, or hosted_page ID" },
+                "url": { "type": "string", "description": "URL (legacy, use value instead)" },
+                "icon": { "type": "string", "description": "Material icon name" }
+              }
+            }
+          }
+        },
+        "required": ["enabled"]
+      }
+    },
+    {
+      "name": "setDrawerCustomization",
+      "description": "Customize drawer/hamburger menu appearance including colors, logo, and header text",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": ["default", "color", "image"],
+            "description": "Drawer background mode"
+          },
+          "backgroundColor": {
+            "type": "string",
+            "description": "Background color in hex format (for 'color' mode)"
+          },
+          "logoEnabled": {
+            "type": "boolean",
+            "description": "Show logo in drawer header"
+          },
+          "logoSize": {
+            "type": "integer",
+            "description": "Logo size in pixels (40-200)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Drawer header title (max 255 chars)"
+          },
+          "subtitle": {
+            "type": "string",
+            "description": "Drawer header subtitle (max 255 chars)"
+          },
+          "textTheme": {
+            "type": "string",
+            "enum": ["light", "dark"],
+            "description": "Text color theme for drawer header"
+          },
+          "iconColorLight": {
+            "type": "string",
+            "description": "Icon color for light mode (hex)"
+          },
+          "iconColorDark": {
+            "type": "string",
+            "description": "Icon color for dark mode (hex)"
+          },
+          "activeColorLight": {
+            "type": "string",
+            "description": "Active/selected item color for light mode (hex)"
+          },
+          "activeColorDark": {
+            "type": "string",
+            "description": "Active/selected item color for dark mode (hex)"
+          }
+        }
+      }
+    },
+    {
+      "name": "setNavigationBehaviors",
+      "description": "Configure navigation behaviors like pull-to-refresh, swipe navigation, and tab state preservation",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pullToRefresh": {
+            "type": "boolean",
+            "description": "Enable pull-to-refresh gesture"
+          },
+          "swipeNavigation": {
+            "type": "boolean",
+            "description": "Enable swipe navigation between tabs (auto-disabled for drawer layouts)"
+          },
+          "preserveTabState": {
+            "type": "boolean",
+            "description": "Preserve tab state when switching between tabs"
+          }
+        }
+      }
+    },
+    {
+      "name": "setAppBarButtons",
+      "description": "Configure top action bar buttons (max 3 buttons)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "buttons": {
+            "type": "array",
+            "description": "Array of app bar buttons (max 3)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "description": "Button label (max 50 chars)"
+                },
+                "actionType": {
+                  "type": "string",
+                  "enum": ["internal", "external", "share", "email", "call", "hosted_page"],
+                  "description": "Type of action when button is tapped"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Action value (URL, email, phone number, or hosted_page ID)"
+                },
+                "icon": {
+                  "type": "string",
+                  "description": "Material icon name"
+                }
+              },
+              "required": ["label", "actionType", "icon"]
+            }
+          }
+        },
+        "required": ["buttons"]
+      }
+    },
+    {
+      "name": "setSplashscreen",
+      "description": "Configure the app splash screen basic settings",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "backgroundColor": { "type": "string", "description": "Background color in hex format" },
+          "title": { "type": "string", "description": "Splash screen title text" },
+          "subtitle": { "type": "string", "description": "Splash screen subtitle text" }
+        }
+      }
+    },
+    {
+      "name": "setSplashscreenDetails",
+      "description": "Configure detailed splashscreen settings including background type, duration, animation, and logo",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "backgroundType": {
+            "type": "string",
+            "enum": ["color", "image"],
+            "description": "Background type for splashscreen"
+          },
+          "backgroundColor": {
+            "type": "string",
+            "description": "Background color in hex format (for 'color' type)"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Splashscreen duration in seconds (1-10)"
+          },
+          "animation": {
+            "type": "string",
+            "enum": ["fade", "slide", "zoom", "none"],
+            "description": "Transition animation type"
+          },
+          "logoEnabled": {
+            "type": "boolean",
+            "description": "Show logo on splashscreen"
+          },
+          "logoSize": {
+            "type": "integer",
+            "description": "Logo size in pixels (60-240)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Splashscreen title text (max 255 chars)"
+          },
+          "subtitle": {
+            "type": "string",
+            "description": "Splashscreen subtitle text (max 255 chars)"
+          },
+          "textTheme": {
+            "type": "string",
+            "enum": ["light", "dark"],
+            "description": "Text color theme"
+          }
+        }
+      }
+    },
+    {
+      "name": "setWebViewConfiguration",
+      "description": "Configure WebView behavior settings like JavaScript, DOM storage, zoom, and caching",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "userAgent": {
+            "type": "string",
+            "description": "Custom User-Agent string (max 1000 chars). Leave empty for default."
+          },
+          "enableJavascript": {
+            "type": "boolean",
+            "description": "Enable JavaScript execution in WebView"
+          },
+          "enableDomStorage": {
+            "type": "boolean",
+            "description": "Enable DOM storage (localStorage/sessionStorage)"
+          },
+          "enableZoom": {
+            "type": "boolean",
+            "description": "Enable pinch-to-zoom"
+          },
+          "enableCache": {
+            "type": "boolean",
+            "description": "Enable page caching"
+          }
+        }
+      }
+    },
+    {
+      "name": "setPermissions",
+      "description": "Configure Android permissions",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": { "type": "boolean", "description": "GPS location access" },
+          "camera": { "type": "boolean", "description": "Camera access" },
+          "storage": { "type": "boolean", "description": "File storage access" },
+          "microphone": { "type": "boolean", "description": "Microphone access" },
+          "readContacts": { "type": "boolean", "description": "Read contacts access" },
+          "vibrate": { "type": "boolean", "description": "Vibration access" }
+        }
+      }
+    },
+    {
+      "name": "setCustomCode",
+      "description": "Inject custom CSS and JavaScript code into the app. Requires can_use_custom_code plan permission.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "customCSS": {
+            "type": "string",
+            "description": "Custom CSS code to inject (max 100KB)"
+          },
+          "customJavaScript": {
+            "type": "string",
+            "description": "Custom JavaScript code to inject (max 100KB)"
+          }
+        }
+      }
+    },
+    {
+      "name": "setSigningKey",
+      "description": "Select a keystore for signing release builds",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keystoreId": {
+            "type": "integer",
+            "description": "ID of the keystore to use for signing. Use 0 or null to clear."
+          }
+        },
+        "required": ["keystoreId"]
+      }
+    },
+    {
+      "name": "setNotificationConfiguration",
+      "description": "Enable or disable push notifications for the app. Note: Firebase configuration files must be uploaded via the UI.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Enable or disable push notifications"
+          }
+        },
+        "required": ["enabled"]
+      }
+    },
+    {
+      "name": "triggerBuild",
+      "description": "Start building the Android app",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string",
+            "enum": ["apk", "aab"],
+            "description": "APK for testing, AAB for Play Store"
+          }
+        },
+        "required": ["format"]
+      }
+    },
+    {
+      "name": "getAppStatus",
+      "description": "Get current app configuration summary (use getAppConfig for full details)",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "createHostedPage",
+      "description": "Create a new hosted HTML page for the app (About Us, Terms, FAQ, Contact, etc.)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Page title (max 100 chars)"
+          },
+          "template": {
+            "type": "string",
+            "enum": ["blank", "about-us", "contact", "menu", "terms", "faq"],
+            "description": "Pre-built template to use. Defaults to blank."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "published"],
+            "description": "Page visibility. Defaults to draft."
+          }
+        },
+        "required": ["title"]
+      }
+    },
+    {
+      "name": "listHostedPages",
+      "description": "List all hosted pages for the current app with their URLs and status",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "updateHostedPage",
+      "description": "Update a hosted page's title or status",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "description": "ID of the page to update"
+          },
+          "title": {
+            "type": "string",
+            "description": "New page title"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "published"],
+            "description": "Page visibility status"
+          }
+        },
+        "required": ["pageId"]
+      }
+    },
+    {
+      "name": "editHostedPage",
+      "description": "Edit a hosted page's HTML, CSS, and JavaScript content",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "description": "ID of the page to edit"
+          },
+          "htmlContent": {
+            "type": "string",
+            "description": "HTML content for the page body"
+          },
+          "cssContent": {
+            "type": "string",
+            "description": "CSS styles for the page"
+          },
+          "jsContent": {
+            "type": "string",
+            "description": "JavaScript code for the page"
+          }
+        },
+        "required": ["pageId"]
+      }
+    },
+    {
+      "name": "deleteHostedPage",
+      "description": "Delete a hosted page",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "description": "ID of the page to delete"
+          }
+        },
+        "required": ["pageId"]
+      }
+    }
+  ]
+}

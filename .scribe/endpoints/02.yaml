@@ -1,0 +1,361 @@
+name: Notifications
+description: |-
+
+  APIs for sending and managing push notifications to your app users.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/apps/{app_id}/notifications'
+    metadata:
+      custom: []
+      groupName: Notifications
+      groupDescription: |-
+
+        APIs for sending and managing push notifications to your app users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List notifications for an app'
+      description: 'Get a paginated list of push notifications sent to a specific app.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_API_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      app_id:
+        custom: []
+        name: app_id
+        description: 'The ID of the app.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      app_id: 2
+    queryParameters:
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Number of items per page. Default: 15.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      per_page: 10
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "title": "Welcome!",
+                "body": "Thanks for installing our app.",
+                "status": "sent",
+                "sent_at": "2024-01-01T00:00:00.000000Z"
+              }
+            ],
+            "meta": {
+              "current_page": 1,
+              "total": 10
+            }
+          }
+        headers: []
+        description: Success
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/apps/{app_id}/notifications'
+    metadata:
+      custom: []
+      groupName: Notifications
+      groupDescription: |-
+
+        APIs for sending and managing push notifications to your app users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send a push notification'
+      description: 'Send a push notification to all users of a specific app. Requires push notifications to be configured.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_API_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      app_id:
+        custom: []
+        name: app_id
+        description: 'The ID of the app.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      app_id: 2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'The notification title.'
+        required: true
+        example: 'New Update Available'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      body:
+        custom: []
+        name: body
+        description: 'The notification body/message.'
+        required: true
+        example: 'Check out our latest features!'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'URL to an image to include in the notification.'
+        required: false
+        example: 'https://example.com/image.png'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      scheduled_at:
+        custom: []
+        name: scheduled_at
+        description: 'Schedule the notification for a future time (ISO 8601 format).'
+        required: false
+        example: '2024-01-15T10:00:00Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      title: 'New Update Available'
+      body: 'Check out our latest features!'
+      image_url: 'https://example.com/image.png'
+      scheduled_at: '2024-01-15T10:00:00Z'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "title": "New Update Available",
+              "body": "Check out our latest features!",
+              "status": "pending",
+              "created_at": "2024-01-01T00:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Push notifications are not configured for this app.",
+            "error": "notifications_not_configured"
+          }
+        headers: []
+        description: 'Notifications Not Configured'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/notifications/{notification_id}'
+    metadata:
+      custom: []
+      groupName: Notifications
+      groupDescription: |-
+
+        APIs for sending and managing push notifications to your app users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get notification details'
+      description: 'Get details for a specific notification including status and delivery information.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_API_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      notification_id:
+        custom: []
+        name: notification_id
+        description: 'The ID of the notification.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      notification_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "title": "Welcome!",
+              "body": "Thanks for installing our app.",
+              "status": "sent",
+              "sent_at": "2024-01-01T00:00:00.000000Z",
+              "created_at": "2024-01-01T00:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Notification not found."
+          }
+        headers: []
+        description: 'Not Found'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/notifications/{notification_id}'
+    metadata:
+      custom: []
+      groupName: Notifications
+      groupDescription: |-
+
+        APIs for sending and managing push notifications to your app users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Cancel a scheduled notification'
+      description: 'Cancel a notification that has not been sent yet. Only works for pending or scheduled notifications.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_API_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      notification_id:
+        custom: []
+        name: notification_id
+        description: 'The ID of the notification.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      notification_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Notification cancelled successfully."
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Cannot cancel a notification that has already been sent.",
+            "error": "already_sent",
+            "status": "sent"
+          }
+        headers: []
+        description: 'Already Sent'
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Notification not found."
+          }
+        headers: []
+        description: 'Not Found'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

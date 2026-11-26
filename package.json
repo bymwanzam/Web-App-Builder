@@ -1,0 +1,28 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "start": "php artisan optimize:clear && php artisan serve --host=0.0.0.0 --port=8000 --no-reload",
+        "migrate": "php artisan migrate:fresh --seed && php artisan optimize:clear",
+        "build": "vite build",
+        "docs": "vite build --config vite.docs.config.js"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.11",
+        "@tailwindcss/vite": "^4.1.18",
+        "axios": "^1.11.0",
+        "baseline-browser-mapping": "^2.9.11",
+        "concurrently": "^9.0.1",
+        "highlight.js": "^11.11.1",
+        "laravel-vite-plugin": "^2.0.0",
+        "postcss": "^8.4.31",
+        "vite": "^7.0.7"
+    },
+    "dependencies": {
+        "@tailwindcss/typography": "^0.5.19",
+        "apexcharts": "^5.3.5",
+        "flowbite": "^4.0.1",
+        "tom-select": "^2.4.3"
+    }
+}

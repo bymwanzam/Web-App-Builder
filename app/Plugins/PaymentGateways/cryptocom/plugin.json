@@ -1,0 +1,21 @@
+{
+  "name": "Crypto.com Pay",
+  "slug": "cryptocom",
+  "description": "Accept cryptocurrency and fiat payments via Crypto.com Pay",
+  "version": "1.0.0",
+  "author": "Titan Systems",
+  "author_url": "https://codecanyon.net/user/titansystems",
+
+  "type": "payment_gateway",
+  "icon": "resources/icon.jpg",
+
+  "main_class": "src/CryptoComPlugin.php",
+  "namespace": "App\\Plugins\\PaymentGateways\\CryptoComPlugin",
+
+  "requirements": {
+    "php": ">=8.2",
+    "laravel": ">=12.0"
+  },
+
+  "migrations": []
+}

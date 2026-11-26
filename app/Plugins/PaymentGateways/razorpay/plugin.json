@@ -1,0 +1,21 @@
+{
+  "name": "Razorpay",
+  "slug": "razorpay",
+  "description": "Accept payments in India and globally with Razorpay - Support for UPI, Cards, NetBanking, Wallets",
+  "version": "1.0.0",
+  "author": "Titan Systems",
+  "author_url": "https://codecanyon.net/user/titansystems",
+
+  "type": "payment_gateway",
+  "icon": "resources/icon.jpg",
+
+  "main_class": "src/RazorpayPlugin.php",
+  "namespace": "App\\Plugins\\PaymentGateways\\RazorpayPlugin",
+
+  "requirements": {
+    "php": ">=8.2",
+    "laravel": ">=12.0"
+  },
+
+  "migrations": []
+}

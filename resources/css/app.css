@@ -1,0 +1,1043 @@
+/* ============================================
+   TAILWIND CSS v4 CONFIGURATION
+   ============================================ */
+
+/* Import Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Flowbite Theme and Plugin */
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+
+/* @tailwindcss/forms Plugin */
+@plugin "@tailwindcss/forms";
+
+/* @tailwindcss/typography Plugin (for prose/markdown styling) */
+@plugin "@tailwindcss/typography";
+
+/* Content Sources for Class Detection */
+@source "../views/**/*.blade.php";
+@source "../../app/Plugins/**/resources/views/**/*.blade.php";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+
+/* Dark Mode Configuration (Class-Based) */
+@variant dark (&:is(.dark *));
+
+/* Custom Theme (Primary Colors + Font) */
+@theme {
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* SPA Page Transition Animations */
+@layer utilities {
+    /* Fade transition for page content */
+    [wire\:navigate] {
+        transition-property: all;
+        transition-duration: 200ms;
+    }
+
+    /* Page transition states */
+    .page-transitioning {
+        opacity: 0;
+        transform: translateY(0.5rem);
+    }
+
+    .page-ready {
+        opacity: 1;
+        transform: translateY(0);
+        transition-property: all;
+        transition-duration: 300ms;
+        transition-timing-function: ease-out;
+    }
+}
+
+/* ============================================
+   APPY CUSTOM STYLES
+   All custom CSS placed AFTER Tailwind to properly override
+   ============================================ */
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Account for fixed header when scrolling to anchors */
+:target {
+    scroll-margin-top: 80px;
+}
+
+/* Alpine.js x-cloak directive - Hide elements until Alpine loads */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition-duration: 150ms;
+}
+
+/* Enhanced transitions for form elements */
+input,
+select,
+textarea,
+button {
+    transition: all 0.2s ease;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* Loading spinner animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Slide in from right animation (responsive with percentage) */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.toast-slide-in {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Phone mockup gradient animation */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-animate {
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+}
+
+/* Pulse animation for notifications */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Skeleton loading shimmer effect */
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.dark .skeleton {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200px 100%;
+}
+
+/* Success checkmark scale animation */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.success-checkmark {
+    display: inline-flex;
+    animation: scaleIn 0.4s ease;
+}
+
+/* ============================================
+   AI CHAT ANIMATIONS
+   ============================================ */
+
+/* Message fade-in with slide-up */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.3s ease-out forwards;
+}
+
+/* User message slide-in from right */
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in-right {
+    animation: slideInFromRight 0.25s ease-out forwards;
+}
+
+/* Assistant message slide-in from left */
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in-left {
+    animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+/* Float animation for icons */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Single pulse for button feedback */
+@keyframes pulseOnce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-pulse-once {
+    animation: pulseOnce 0.2s ease-in-out;
+}
+
+/* Ping once for input feedback */
+@keyframes pingOnce {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.animate-ping-once {
+    animation: pingOnce 0.4s ease-out forwards;
+}
+
+/* Gradient glow effect for welcome state */
+.ai-glow {
+    background: radial-gradient(ellipse at center, rgba(147, 51, 234, 0.15) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
+}
+
+.dark .ai-glow {
+    background: radial-gradient(ellipse at center, rgba(147, 51, 234, 0.2) 0%, rgba(59, 130, 246, 0.15) 50%, transparent 70%);
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+/* Range Input Sliders - Fix thumb visibility */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 16px !important;
+    height: 16px !important;
+    background: #2563eb !important; /* blue-600 */
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    transition: background-color 0.2s ease !important;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #1d4ed8 !important; /* blue-700 */
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 16px !important;
+    height: 16px !important;
+    background: #2563eb !important;
+    border: none !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    transition: background-color 0.2s ease !important;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    background: #1d4ed8 !important;
+}
+
+.dark input[type="range"]::-webkit-slider-thumb {
+    background: #3b82f6 !important; /* blue-500 */
+}
+
+.dark input[type="range"]::-webkit-slider-thumb:hover {
+    background: #60a5fa !important; /* blue-400 */
+}
+
+.dark input[type="range"]::-moz-range-thumb {
+    background: #3b82f6 !important;
+}
+
+.dark input[type="range"]::-moz-range-thumb:hover {
+    background: #60a5fa !important;
+}
+
+/* Flowbite File Input Styling */
+input[type="file"]::file-selector-button {
+    padding: 0.625rem 1rem;
+    margin-right: 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #2563eb;
+}
+
+.dark input[type="file"]::file-selector-button {
+    background-color: #2563eb;
+}
+
+.dark input[type="file"]::file-selector-button:hover {
+    background-color: #1d4ed8;
+}
+
+.dark input[type="file"] {
+    color-scheme: dark;
+}
+
+/* ============================================
+   SCROLLBAR STYLES
+   ============================================ */
+
+/* Global scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Sidebar Navigation Scrollbar (hover to show) */
+#sidebar-navigation > div > div {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
+}
+
+#sidebar-navigation > div > div:hover {
+    scrollbar-color: #888 #f1f1f1;
+}
+
+.dark #sidebar-navigation > div > div:hover {
+    scrollbar-color: #4b5563 #1f2937;
+}
+
+#sidebar-navigation > div > div::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sidebar-navigation > div > div::-webkit-scrollbar-track {
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+#sidebar-navigation > div > div::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+#sidebar-navigation > div > div:hover::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.dark #sidebar-navigation > div > div:hover::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+#sidebar-navigation > div > div:hover::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.dark #sidebar-navigation > div > div:hover::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+#sidebar-navigation > div > div:hover::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.dark #sidebar-navigation > div > div:hover::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Settings Sidebar Scrollbar (hover to show) */
+#settings-sidebar > div > div {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
+}
+
+#settings-sidebar > div > div:hover {
+    scrollbar-color: #888 #f1f1f1;
+}
+
+.dark #settings-sidebar > div > div:hover {
+    scrollbar-color: #4b5563 #1f2937;
+}
+
+#settings-sidebar > div > div::-webkit-scrollbar {
+    width: 8px;
+}
+
+#settings-sidebar > div > div::-webkit-scrollbar-track {
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+#settings-sidebar > div > div::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+#settings-sidebar > div > div:hover::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.dark #settings-sidebar > div > div:hover::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+#settings-sidebar > div > div:hover::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.dark #settings-sidebar > div > div:hover::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+#settings-sidebar > div > div:hover::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.dark #settings-sidebar > div > div:hover::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* ============================================
+   SETTINGS CARD COMPONENTS
+   ============================================ */
+
+.settings-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    transition: all 0.2s ease;
+}
+
+.settings-card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.dark .settings-card {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+.settings-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .settings-card-header {
+    border-bottom-color: #374151;
+}
+
+.settings-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.dark .settings-card-title {
+    color: #f9fafb;
+}
+
+.settings-card-description {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.dark .settings-card-description {
+    color: #9ca3af;
+}
+
+.settings-card-icon {
+    width: 40px;
+    height: 40px;
+    background: #eff6ff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.dark .settings-card-icon {
+    background: #1e3a8a;
+}
+
+.settings-card-icon svg {
+    width: 20px;
+    height: 20px;
+    color: #3b82f6;
+}
+
+.dark .settings-card-icon svg {
+    color: #60a5fa;
+}
+
+/* ============================================
+   FORM HELPERS
+   ============================================ */
+
+.helper-text {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+    display: block;
+}
+
+.dark .helper-text {
+    color: #9ca3af;
+}
+
+.character-counter {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 4px;
+    text-align: right;
+}
+
+.character-counter.warning {
+    color: #f59e0b;
+}
+
+.character-counter.error {
+    color: #ef4444;
+}
+
+.copy-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #3b82f6;
+    background: #eff6ff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-button:hover {
+    background: #dbeafe;
+}
+
+.copy-button.copied {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.tooltip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    color: #9ca3af;
+    cursor: help;
+}
+
+/* ============================================
+   FILE UPLOAD COMPONENTS
+   ============================================ */
+
+.file-upload-container {
+    width: 100%;
+}
+
+.file-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 200px;
+    padding: 2rem 1.5rem;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    background-color: #f9fafb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-upload-zone:hover {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.file-upload-zone-drag {
+    border-color: #3b82f6;
+    background-color: #dbeafe;
+    transform: scale(1.02);
+}
+
+.dark .file-upload-zone {
+    border-color: #374151;
+    background-color: #1f2937;
+}
+
+.dark .file-upload-zone:hover {
+    border-color: #3b82f6;
+    background-color: #1e3a8a;
+}
+
+.dark .file-upload-zone-drag {
+    border-color: #3b82f6;
+    background-color: #1e40af;
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+
+.toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.toast {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    pointer-events: auto;
+    animation: slideInRight 0.3s ease;
+}
+
+.dark .toast {
+    background: #1f2937;
+}
+
+.toast.success {
+    border-left: 4px solid #10b981;
+}
+
+.toast.error {
+    border-left: 4px solid #ef4444;
+}
+
+.toast.info {
+    border-left: 4px solid #3b82f6;
+}
+
+.toast-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.toast-message {
+    flex: 1;
+    font-size: 14px;
+    color: #111827;
+}
+
+.dark .toast-message {
+    color: #f9fafb;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* ============================================
+   STATUS BADGES
+   ============================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.status-badge.complete {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-badge.incomplete {
+    background: #f3f4f6;
+    border: 2px solid #d1d5db;
+}
+
+.dark .status-badge.incomplete {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f4f6;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn-loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.6s linear infinite;
+}
+
+/* ============================================
+   INTERACTIVE ELEMENTS
+   ============================================ */
+
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.modal-backdrop {
+    animation: fadeIn 0.2s ease-out;
+}
+
+.focus-ring:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.disabled-state {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ============================================
+   SIDEBAR DRAWER STYLES
+   ============================================ */
+
+#sidebar-navigation {
+    transition: transform 0.3s ease-in-out;
+}
+
+#settings-sidebar {
+    transition: transform 0.3s ease-in-out;
+}
+
+[drawer-backdrop] {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* ============================================
+   PHONE MOCKUP
+   ============================================ */
+
+.phone-mockup {
+    aspect-ratio: 1 / 2;
+    height: 560px;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 640px) {
+    /* File upload zones */
+    .file-upload-zone {
+        min-height: 160px;
+        padding: 1.5rem 1rem;
+    }
+
+    /* Settings cards */
+    .settings-card {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+
+    .settings-card-icon {
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+    }
+
+    .settings-card-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Toast notifications */
+    .toast-container {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .toast {
+        min-width: auto;
+    }
+
+    /* Ensure main content doesn't have left margin on mobile */
+    main.sm\:ml-64,
+    div.sm\:ml-64 {
+        margin-left: 0 !important;
+        padding-top: 0.5rem !important;
+    }
+
+    [data-drawer-toggle="settings-sidebar"] {
+        z-index: 50;
+    }
+
+    main.sm\:ml-64.xl\:mr-80 {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Desktop: Ensure sidebar is always visible */
+@media (min-width: 640px) {
+    #sidebar-navigation {
+        transform: translateX(0) !important;
+    }
+
+    [data-drawer-toggle="sidebar-navigation"] {
+        display: none;
+    }
+}
+
+/* ============================================
+   APEXCHARTS TOOLTIP FIX
+   Flowbite sets font-size: 0px on these elements
+   Placed after Tailwind so cascade order handles override
+   ============================================ */
+
+.apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-title {
+    font-size: 14px !important;
+}
+
+.apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text-y-label,
+.apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text-y-value {
+    font-size: 14px !important;
+}
+
+.apexcharts-canvas .apexcharts-xaxistooltip-text {
+    font-size: 12px !important;
+}
+
+.apexcharts-canvas .apexcharts-legend-text {
+    font-size: 14px !important;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    aside,
+    nav,
+    button {
+        display: none !important;
+    }
+
+    main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
