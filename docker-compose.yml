@@ -1,11 +1,17 @@
 # Appy on Docker
 #
-#   docker compose up -d --build
-#   open http://localhost:8080 and follow the installer
+# Easiest way to run it (does all of this for you):
+#   Windows:      ./appy.ps1 start   (in PowerShell)
+#   macOS/Linux:  ./appy.sh start
 #
-# Override defaults by exporting variables or putting them in a file passed
-# with --env-file (variables below are prefixed APPY_ so they never clash with
-# the Laravel .env in this folder).
+# Manual equivalent:
+#   docker compose --env-file appy.env up -d --build                     # web app only
+#   docker compose --env-file appy.env --profile builder up -d --build   # + Android build server
+#
+# Settings live in appy.env (copy of appy.env.example). Variables are prefixed
+# APPY_ so they never clash with the Laravel .env.
+
+name: appy
 
 x-app: &app
   image: appy:latest
@@ -44,15 +50,20 @@ services:
       app:
         condition: service_healthy
 
-  # Android build server (Go + JDK 17 + Android SDK), built from ../Builder.
+  # Android build server (Go + JDK 17 + Android SDK), built from ../Builder
+  # (or APPY_BUILDER_PATH). Only started with "--profile builder", so the web
+  # app still runs when the Builder folder is not there.
   # Not published to the host: Laravel reaches it at http://builder:8845 and it
   # calls back to Laravel at http://app. Its key lives in docker/builder.env and
   # must match the builder's "server key" in Admin > Builders.
   builder:
-    build: ../Builder
+    profiles: ["builder"]
+    build: ${APPY_BUILDER_PATH:-../Builder}
     image: appy-builder:latest
     restart: unless-stopped
-    env_file: docker/builder.env
+    env_file:
+      - path: docker/builder.env
+        required: false
     environment:
       BUILDER_SITE_URL: http://app
       BUILDER_PORT: 8845

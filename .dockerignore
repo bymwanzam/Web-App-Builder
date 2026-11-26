@@ -31,3 +31,4 @@ docker-compose.yml
 .dockerignore
 *.log
 docker/builder.env
+appy.env
